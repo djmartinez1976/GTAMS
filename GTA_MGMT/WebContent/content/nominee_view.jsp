@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -50,20 +50,9 @@
 		</div>
 
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
-			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search">
-			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/GTAMS">Home</a></li>
-				<li class="active"><a href="signup.jsp">Signup</a></li>
-				<li><a href="login.jsp">Login</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Explore<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Contact us</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Further Actions</a></li>
-					</ul></li>
+				<li><a href="content/login.jsp">Login</a></li>
 			</ul>
 		</div>
 		<!-- /.nav-collapse -->
@@ -83,17 +72,14 @@
 $(document).ready(function(){
 
     var prevPHDACount = 2;
-		
+	var courseCount = 2;
+	var pubCount =2;
+	
     $("#addPHDA").click(function () {
-				
 	if(prevPHDACount>5){
             alert("Only 5 Records allowed");
             return false;
 	}   
-	
-	//var newPHDADiv = $(document.createElement('div'))
-	//     .attr("id", 'TextBoxDiv');
-	
 	var newPHDADiv = $("<div />");
                 
 	newPHDADiv.html('<input type="text" class="col-lg-5 control-text" name="prevPHDAdvisor' +prevPHDACount + 
@@ -101,14 +87,46 @@ $(document).ready(function(){
 			+ prevPHDACount + '" id="prevPHDAdvisor"' + prevPHDACount +'" placeholder="Duration" />');
             
 	newPHDADiv.appendTo("#PHDAdvisorInfo");
-
-				
 	prevPHDACount++;
      });
+    
+    $("#addCourse").click(function () {
+    	if(courseCount>5){
+                alert("Only 5 Records allowed");
+                return false;
+    	}   
+    	var newCourseDiv = $("<div />");
+                    
+    	newCourseDiv.html('<input type="text" class="col-lg-5 control-text" name="courseName' +courseCount + 
+    			'" id="courseName"' + courseCount + '" placeholder="Name of Course" /> <input type="text" class="col-lg-5 control-text" name="courseGrade' +
+    			+ courseCount + '" id="courseGrade"' + courseCount +'" placeholder="Grade Achieved" />');
+                
+    	newCourseDiv.appendTo("#gradCoursesInfo");
+    	courseCount++;
+    });
+
+	/*<div id="publicationInfo">
+	<label for="lblpubName" class="col-lg-5 control-label">Publication Name</label>
+	<label for="lblpubComment" class="col-lg-5 control-label">Comments </label>
+		<input type="text" class="col-lg-5 control-text" name="pubName1" id="pubName1" placeholder="Publication Name" />
+		<input type="text" class="col-lg-5 control-text" name="pubComment1" id="pubComment1" placeholder="Comments" />*/
+    
+    $("#addPub").click(function () {
+    	if(pubCount>5){
+                alert("Only 5 Records allowed");
+                return false;
+    	}   
+    	var newPubDiv = $("<div />");
+                    
+    	newPubDiv.html('<input type="text" class="col-lg-5 control-text" name="pubName' +pubCount + 
+    			'" id="pubName"' + pubCount + '" placeholder="Name of Publication" /> <input type="text" class="col-lg-5 control-text" name="pubComment' +
+    			+ pubCount + '" id="pubComment"' + pubCount +'" placeholder="Comments" />');
+                
+    	newPubDiv.appendTo("#publicationInfo");
+    	pubCount++;
+         });
 });
 </script>
-
-
 	<div class="container">
 		<div class="jumbotron">
 			<div>
@@ -118,27 +136,46 @@ $(document).ready(function(){
 		<div></div>
 	</div>
 
-	<c:if test="${not empty message}">
-		<div class="message green">${message}</div>
-	</c:if>
-
 	<div class="col-lg-6 col-lg-offset-3">
 		<div class="well">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
-						<form id="myForm" method="post" class="bs-example form-horizontal"
-							action="../StudentController">
+						<form id="myForm" method="post" class="bs-example form-horizontal" action="NomineeActionController">
 							<fieldset>
-								<legend>Nominee Registration Form</legend>
+								<legend>Nominee Registration Form
+								<% 
+								String nomineeName=request.getSession().getAttribute("name").toString();
+								String nomineeEmail="";
+								String nomineePid="";
+								String nominatedBy="";
 								
-								<input type="hidden" name="pageName" value="signup">
+								if( nomineeName != null) 
+								{
+									Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+						            Statement stmtNominee = connection.createStatement() ;
+						            ResultSet rsNominee = stmtNominee.executeQuery("select * from nominee where name='" + nomineeName +"'") ;
+						            if (rsNominee.next())
+						            {
+							            nomineeEmail = rsNominee.getString("email");
+										nomineePid = rsNominee.getString("pid");
+										nominatedBy = rsNominee.getString("nominated_by");
+						            }
+								%>
+								<div align="right">  
+								<%
+								 out.println("Welcome:"+ nomineeName +"|"+ nomineeEmail); %>
+								</div>
+								<%} %>
+								
+								</legend>
+								<input type="hidden" name="pageName" value="nominee_view">
 
-								<div class="form-group">
+ 								<div class="form-group">
 									<label for="nomineeNameInput" class="col-lg-3 control-label">Name</label>
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="nomineeName"
-											id="nomineeNameInput" placeholder="Nominee Name" />
+											id="nomineeName" value=<%=nomineeName %> readonly />
 									</div>
 								</div>
 
@@ -146,7 +183,7 @@ $(document).ready(function(){
 									<label for="NomineeEmailInput" class="col-lg-3 control-label">Email Address</label>
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="email"
-											id="emailInput" placeholder="Nominee Email Address" />
+											id="emailInput" value=<%=nomineeEmail %> readonly />
 									</div>
 								</div>
 
@@ -154,7 +191,15 @@ $(document).ready(function(){
 									<label for="pidInput" class="col-lg-3 control-label">PID</label>
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="pid"
-											id="pidInput" placeholder="Nominee PID" />
+											id="pidInput" value=<%=nomineePid %> readonly />
+									</div>
+								</div>
+		
+								<div class="form-group">
+									<label for="nominatedByInput" class="col-lg-3 control-label">Nominated By</label>
+									<div class="col-lg-9">
+										<input type="text" class="form-control" name="nominatedBy"
+											id="nominatedby" value=<%=nominatedBy %> readonly />
 									</div>
 								</div>
 
@@ -163,14 +208,6 @@ $(document).ready(function(){
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="phoneNo"
 											id="phoneNo" placeholder="Nominee Phone No" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="nominatedByInput" class="col-lg-3 control-label">Nominated By</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="nominatedBy"
-											id="nominatedby" placeholder="Nominated By" />
 									</div>
 								</div>
 
@@ -199,17 +236,15 @@ $(document).ready(function(){
 									</div>
 								</div>
 
-
-								<!-- <div class="form-group">
-									<label for="dateOfBirthInput" class="col-lg-3 control-label">Date
-										of Birth</label>
-									<div class="date form_date col-lg-9"
-										data-date-format="mm/dd/yyyy" data-date-viewmode="years">
-										<input type="text" class="form-control" name="dateOfBirth"
-											id="dateOfBirthInput" placeholder="Date of Birth" />
+								<div class="form-group">
+									<label for="numSemGTA" class="col-lg-3 control-label">Number of Semesters As GTA</label>
+									<div class="col-lg-9">
+										<input type="text" class="form-control" name="numSemestersGTA"
+											id="numSemestersGTA" placeholder="Number of Semesters as GTA" />
 									</div>
 								</div>
- 								-->
+
+
 								<div class="form-group">
 									<label for="currPHDAdvisor" class="col-lg-3 control-label">Current PHD Advisor </label>
 									<div class="col-lg-9">
@@ -225,16 +260,46 @@ $(document).ready(function(){
 										<input type="text" class="col-lg-5 control-text" name="prevPHDAdvisor1" id="prevPHDAdvisor1" placeholder="Previous PHD Advisor" />
 										<input type="text" class="col-lg-5 control-text" name="prevPHDAdvisorPeriod1" id="prevPHDPeriod1" placeholder="Duration" />
 										<input type="button"class="col-lg-2 control-text" id="addPHDA" value="Add Record" />
-									</div>
-									
-									
-    								<!--Textboxes will be added here -->
+    								<!--additional PHD Advisor Info will be here -->
 								</div>
+
+								<div id="gradCoursesInfo">
+									<label for="lblcourseName" class="col-lg-5 control-label">Name of course</label>
+									<label for="lblcourseGrade" class="col-lg-5 control-label">Grade </label>
+										<input type="text" class="col-lg-5 control-text" name="courseName1" id="courseName1" placeholder="Course Name" />
+										<input type="text" class="col-lg-5 control-text" name="courseGrade1" id="courseGrade1" placeholder="Grade Achieved" />
+										<input type="button"class="col-lg-2 control-text" id="addCourse" value="Add Course" />
+    								<!--Additional Courses will be added here -->
+								</div>
+
+								<div class="form-group">
+									<label for="gpaLbl" class="col-lg-3 control-label">GPA of Above courses </label>
+									<div class="col-lg-9">
+										<input type="text" class="form-control" name="GPA"
+											id="GPA" placeholder="GPA of All Above Courses" />
+									</div>
+								</div>
+
+								<div id="publicationInfo">
+									<label for="lblpubName" class="col-lg-5 control-label">Publication Name</label>
+									<label for="lblpubComment" class="col-lg-5 control-label">Comments </label>
+										<input type="text" class="col-lg-5 control-text" name="pubName1" id="pubName1" placeholder="Publication Name" />
+										<input type="text" class="col-lg-5 control-text" name="pubComment1" id="pubComment1" placeholder="Comments" />
+										<input type="button"class="col-lg-2 control-text" id="addPub" value="Add Publication" />
+    								<!--Additional Publications will be added here -->
+								</div>
+
+								<%if (request.getAttribute("errorMessage")!=null) %>
+								<div style="color: #FF0000;"><%=request.getAttribute("errorMessage") %></div>
+
+								<%if (request.getAttribute("successMessage")!=null) %>
+								<div style="color: #00FF00;"><%=request.getAttribute("successMessage") %></div>
 
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button class="btn btn-primary" data-toggle="modal"
 										data-target="#themodal">Submit</button>
+										
 									<div id="themodal" class="modal fade" data-backdrop="static">
 										<div class="modal-dialog">
 											<div class="modal-content">

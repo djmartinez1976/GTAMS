@@ -25,20 +25,9 @@ body {
 		</div>
 
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
-			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search">
-			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="active"><a href="/GTAMS">Home</a></li>
-				<li><a href="content/signup.jsp">Signup</a></li>
 				<li><a href="content/login.jsp">Login</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Explore<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Contact us</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Further Actions</a></li>
-					</ul></li>
 			</ul>
 		</div>
 		<!-- /.nav-collapse -->
@@ -47,7 +36,7 @@ body {
 		<div class="jumbotron">
 			<div>
 				<h1>Welcome to GTA Management System!</h1>
-				<p>Please login to access your details</p>
+				<p>Please login to access GTAMS</p>
 			</div>
 
 			<a class="btn btn-primary" href="content/signup.jsp">Signup » </a> <a

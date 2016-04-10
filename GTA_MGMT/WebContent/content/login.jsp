@@ -22,7 +22,7 @@
 	margin: 16px;
 }
 </style>
-<title>Student Enrollment Login</title>
+<title>GTAMS Login</title>
 </head>
 <body>
 	<script src="/GTAMS/jquery-1.8.3.js">
@@ -49,15 +49,7 @@
 			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/GTAMS">Home</a></li>
-				<li><a href="signup.jsp">Signup</a></li>
 				<li class="active"><a href="login.jsp">Login</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Explore<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Contact us</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Further Actions</a></li>
-					</ul></li>
 			</ul>
 		</div>
 		<!-- /.nav-collapse -->
@@ -66,7 +58,7 @@
 	<div class="container">
 		<div class="jumbotron">
 			<div>
-				<h1>Welcome to Online Student Enrollment Login</h1>
+				<h1>Welcome to GTA Management System Login</h1>
 				<p>Login to explore the complete features!</p>
 			</div>
 		</div>
@@ -80,9 +72,9 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<form id="myForm" method="post"
-							class="bs-example form-horizontal" action="../StudentController">
+							class="bs-example form-horizontal" action="../LoginController">
 							<fieldset>
-								<legend>Student Enrollment Login Form</legend>
+								<legend>GTA Management System Login Form</legend>
 								
 								<input type="hidden" name="pageName" value="login">
 

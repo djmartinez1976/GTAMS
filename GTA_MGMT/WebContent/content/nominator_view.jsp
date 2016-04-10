@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -50,20 +50,9 @@
 		</div>
 
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
-			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search">
-			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/GTAMS">Home</a></li>
-				<li class="active"><a href="signup.jsp">Signup</a></li>
-				<li><a href="login.jsp">Login</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Explore<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Contact us</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Further Actions</a></li>
-					</ul></li>
+				<li><a href="content/login.jsp">Login</a></li>
 			</ul>
 		</div>
 		<!-- /.nav-collapse -->
@@ -96,13 +85,26 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
-						<form id="myForm" method="post" class="bs-example form-horizontal"
-							action="../StudentController">
+						<form id="myForm" method="post" class="bs-example form-horizontal" action="NominatorActionController">
 							<fieldset>
-								<legend>Nominator Dashboard</legend>
+								<legend>Nominator Dashboard
+								<% if( request.getSession().getAttribute("name") != null) 
+								{
+									Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+						            Statement stmtNominator = connection.createStatement() ;
+						            ResultSet rsNominator = stmtNominator.executeQuery("select * from nominator where name='" + request.getSession().getAttribute("name") +"'") ;
+			
+								%>
+								<div align="right">  
+								<%
+								 out.println("Welcome:"+ request.getSession().getAttribute("name").toString() +"|"+ (rsNominator.next() ? rsNominator.getString("email"): "")); %>
+								</div>
+								<%} %>
+								</legend>
 								
-								<input type="hidden" name="pageName" value="signup">
-
+								
+								<input type="hidden" name="pageName" value="nominator_view">
+								<!-- 
 								<div class="form-group">
 									<label for="nominatorNameInput" class="col-lg-3 control-label">Name</label>
 									<div class="col-lg-9">
@@ -111,7 +113,6 @@
 									</div>
 								</div>
 
-
 								<div class="form-group">
 									<label for="NominatorEmailInput" class="col-lg-3 control-label">Email Address</label>
 									<div class="col-lg-9">
@@ -119,6 +120,7 @@
 											id="emailInput" placeholder="Nominator Email Address" />
 									</div>
 								</div>
+								 -->
 
 								<div class="form-group">
 									<label for="rankingInput" class="col-lg-3 control-label">Ranking</label>
@@ -139,8 +141,8 @@
 								<div class="form-group">
 									<label for="NomineeEmailInput" class="col-lg-3 control-label">Nominee Email Address</label>
 									<div class="col-lg-9">
-										<input type="text" class="form-control" name="email"
-											id="emailInput" placeholder="Nominee Email Address" />
+										<input type="text" class="form-control" name="nomineeEmail"
+											id="NomineemailInput" placeholder="Nominee Email Address" />
 									</div>
 								</div>
 
@@ -168,10 +170,15 @@
 									</div>
 								</div>
 
+								<%if (request.getAttribute("errorMessage")!=null) %>
+								<div style="color: #FF0000;"><%=request.getAttribute("errorMessage") %></div>
+
+								<%if (request.getAttribute("successMessage")!=null) %>
+								<div style="color: #00FF00;"><%=request.getAttribute("successMessage") %></div>
+
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
-									<button class="btn btn-primary" data-toggle="modal"
-										data-target="#themodal">Submit</button>
+									<button class="btn btn-primary" data-toggle="modal" data-target="#themodal">Submit</button>
 									<div id="themodal" class="modal fade" data-backdrop="static">
 										<div class="modal-dialog">
 											<div class="modal-content">

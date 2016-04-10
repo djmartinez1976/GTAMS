@@ -1,13 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Nominee Registration</title>
+<title>GC Members Registration</title>
 <link href="/GTAMS/bootstrap/css/bootstrap.css" rel="stylesheet" />
 <link href="/GTAMS/datepicker/css/datepicker.css" rel="stylesheet" />
 <link href="/GTAMS/assets/css/bootstrap-united.css" rel="stylesheet" />
@@ -57,13 +56,6 @@
 				<li><a href="/GTAMS">Home</a></li>
 				<li class="active"><a href="signup.jsp">Signup</a></li>
 				<li><a href="login.jsp">Login</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Explore<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Contact us</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Further Actions</a></li>
-					</ul></li>
 			</ul>
 		</div>
 		<!-- /.nav-collapse -->
@@ -84,7 +76,6 @@
 				<h1>Welcome to GTA Management System</h1>
 			</div>
 		</div>
-		<div></div>
 	</div>
 
 	<c:if test="${not empty message}">
@@ -96,119 +87,72 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
-						<form id="myForm" method="post" class="bs-example form-horizontal"
-							action="../StudentController">
+						<form id="myForm" method="post" class="bs-example form-horizontal" action="../StudentController">
 							<fieldset>
-								<legend>GC Members Panel</legend>
+								<legend>GC Members Panel
+								<div align="right"> 
+								Welcome: <% if( request.getSession().getAttribute("name") != null)
+								{ out.println(request.getSession().getAttribute("name").toString()); } %>
+								</div>
+								</legend>
+
+								<%
+//								Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+								Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
 								
-								<input type="hidden" name="pageName" value="signup">
+					            Statement stmtNominee = connection.createStatement() ;
+					            ResultSet rsNominee = stmtNominee.executeQuery("select * from nominee order by nominated_by, ranking") ;
+					            
+					            Statement stmtGCMembers = connection.createStatement() ;
+					            ResultSet rsGCMembers = stmtGCMembers.executeQuery("select * from gc_members") ;
+					            
+					            Statement stmtScorecard = connection.createStatement() ;
+				            	ResultSet rsScorecard;
 
-								<div class="form-group">
-									<label for="nominatorNameInput" class="col-lg-3 control-label">Nominator</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="nominatorName"
-											id="nominatorNameInput" placeholder="Nominator Name" />
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<label for="nomineeNameInput" class="col-lg-3 control-label">Nominee</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="nomineeName"
-											id="nomineeNameInput" placeholder="Nominee Name" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="Ranking" class="col-lg-3 control-label">Rank Buy Nominator Address</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="email"
-											id="emailInput" placeholder="Nominee Email Address" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="pidInput" class="col-lg-3 control-label">PID</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="pid"
-											id="pidInput" placeholder="Nominee PID" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="phoneNoInput" class="col-lg-3 control-label">Phone No</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="phoneNo"
-											id="phoneNo" placeholder="Nominee Phone No" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="nominatedByInput" class="col-lg-3 control-label">Nominated By</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="nominatedBy"
-											id="nominatedby" placeholder="Nominated By" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="isPHDCS" class="col-lg-3 control-label">PHD Student in Computer Science</label>
-									<div class="col-lg-3">
-										<input type="radio" name="isPHDCS" id="radioIsPHDCSY"  value="Yes" /> YES
-										<input type="radio" name="isPHDCS" id="radioIsPHDCSN"  value="No" checked /> No
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="speakTestPassed" class="col-lg-3 control-label">SPEAK TEST PASSED</label>
-									<div class="col-lg-9">
-										<input type="radio" name="speakTestPassed" id="radioSpeakTestPassedY" placeholder="SPEAK TEST PASSED" value="Yes" /> YES
-										<input type="radio" name="speakTestPassed" id="radioSpeakTestPassedN" placeholder="SPEAK TEST PASSED" value="No" checked /> No
-										<input type="radio" name="speakTestPassed" id="radioSpeakTestPassedUS" placeholder="SPEAK TEST PASSED" value="USG" /> US Graduate
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="numSem" class="col-lg-3 control-label">Number of Semesters in Graduation</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="numSemesters"
-											id="numSemesters" placeholder="Number of Semesters in Graduation" />
-									</div>
-								</div>
-
-
-								<!-- <div class="form-group">
-									<label for="dateOfBirthInput" class="col-lg-3 control-label">Date
-										of Birth</label>
-									<div class="date form_date col-lg-9"
-										data-date-format="mm/dd/yyyy" data-date-viewmode="years">
-										<input type="text" class="form-control" name="dateOfBirth"
-											id="dateOfBirthInput" placeholder="Date of Birth" />
-									</div>
-								</div>
- 								-->
-								<div class="form-group">
-									<label for="currPHDAdvisor" class="col-lg-3 control-label">Current PHD Advisor </label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="currPHDAdvisor"
-											id="currentPHDAdvisor" placeholder="Current PHD Advisor" />
-									</div>
-								</div>
+					            %>
+						       <TABLE BORDER="1">
+						            <TR>
+						                <TH>Nominee</TH>
+						                <TH>Nominator</TH>
+						                <TH>Rank</TH>
+						                <TH>Existing</TH>
+						                <% while(rsGCMembers.next()){ %>
+						                	<TH><%=rsGCMembers.getString("name") %></TH>
+							            <% } %>
+										<TH>Average Score</TH>	                
+						            </TR>
+						            <% while(rsNominee.next()){ %>
+						            <TR>
+						                 <TD> <a href="./content/nominee_detail_view.jsp?nomineeName=<%=rsNominee.getString("name")%>"  
+						                onclick="window.open(this.href,'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes); return false;"> <%= rsNominee.getString("name") %> </a> </TD>
+						                
+						                <TD> <%= rsNominee.getString("nominated_by") %></TD>
+						                <TD> <%= rsNominee.getString("ranking") %></TD>
+						                <TD> <%= rsNominee.getString("is_phd_cs") %></TD>
+						                <% //if(rsGCMembers.first())
+						                	rsGCMembers.beforeFirst();
+						                	int totalScore =0;
+						                	int count = 0;
+						                	while(rsGCMembers.next())
+						                	{
+								            	rsScorecard = stmtScorecard.executeQuery("select score from scorecard where nominee_name='" 
+									            				+ rsNominee.getString("name") + "' and gcm_name='"+ rsGCMembers.getString("name") + "'") ;
+						                		
+							                	if (rsScorecard.next() ){
+							                		totalScore +=rsScorecard.getInt("score");
+							                	%>
+							                	<TD> <%=rsScorecard.getInt("score") %></TD>
+						                	<%} else {%>
+						                	<TD> 0</TD>
+							                	<%}
+							                	count++;
+							                	}%>
+						                	<TD> <%=totalScore/count %></TD>
+						                	<%}%>
+						            </TR>
+						        </TABLE>
 								
-								<div id="PHDAdvisorInfo">
-									<label for="prevPHDAdvisor" class="col-lg-5 control-label">Previous PHD Advisor </label>
-									<label for="prevPHDAdvisor" class="col-lg-5 control-label">Duration </label>
-									<!-- <div class="col-lg-5">  -->
-										<input type="text" class="col-lg-5 control-text" name="prevPHDAdvisor1" id="prevPHDAdvisor1" placeholder="Previous PHD Advisor" />
-										<input type="text" class="col-lg-5 control-text" name="prevPHDAdvisorPeriod1" id="prevPHDPeriod1" placeholder="Duration" />
-										<input type="button"class="col-lg-2 control-text" id="addPHDA" value="Add Record" />
-									</div>
-									
-									
-    								<!--Textboxes will be added here -->
-								</div>
-
+								<input type="hidden" name="pageName" value="gc_members_view">
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button class="btn btn-primary" data-toggle="modal"

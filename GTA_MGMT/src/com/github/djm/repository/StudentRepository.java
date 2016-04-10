@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.github.djm.model.LoginInfo;
 import com.github.djm.util.DbUtil;
 
 public class StudentRepository {
@@ -19,6 +20,7 @@ public class StudentRepository {
 	public void save(String userName, String password, String firstName, String lastName, String dateOfBirth, String emailAddress) {
 		try {
 			PreparedStatement prepStatement = dbConnection.prepareStatement("insert into student(userName, password, firstName, lastName, dateOfBirth, emailAddress) values (?, ?, ?, ?, ?, ?)");
+			
 			prepStatement.setString(1, userName);
 			prepStatement.setString(2, password);
 			prepStatement.setString(3, firstName);
@@ -56,7 +58,7 @@ public class StudentRepository {
 	
 	public boolean findByLogin(String userName, String password) {
 		try {
-			PreparedStatement prepStatement = dbConnection.prepareStatement("select password from student where userName = ?");
+			PreparedStatement prepStatement = dbConnection.prepareStatement("select password from login_master where username = ?");
 			prepStatement.setString(1, userName);			
 			
 			ResultSet result = prepStatement.executeQuery();
@@ -71,6 +73,65 @@ public class StudentRepository {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	
+	/**
+	 * 
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return X if no user was found, else the role defined
+	 */
+	public String findRoleByLogin(String userName, String password) {
+		String result = "X";
+		try {
+			PreparedStatement prepStatement = dbConnection.prepareStatement("select password,role from login_master where username = ?");
+			prepStatement.setString(1, userName);			
+			
+			ResultSet rs = prepStatement.executeQuery();
+			if (result != null) {
+				while (rs.next()) {
+					if (rs.getString("password").equals(password)) {
+						result = rs.getString("role");
+						return result;
+					}
+				}				
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return X if no user was found, else the role defined
+	 */
+	public LoginInfo getLoginInfoByLogin(String userName, String password) {
+		LoginInfo result = new LoginInfo();
+		try {
+			PreparedStatement prepStatement = dbConnection.prepareStatement("select password,role,name,pwd_recovery_key from login_master where username = ?");
+			prepStatement.setString(1, userName);			
+			
+			ResultSet rs = prepStatement.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					if (rs.getString("password").equals(password)) {
+						result.Role = rs.getString("role");
+						result.name = rs.getString("name");
+						result.key = rs.getString("pwd_recovery_key");
+						return result;
+					}
+				}				
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

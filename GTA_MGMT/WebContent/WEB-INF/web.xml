@@ -5,11 +5,45 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <servlet-name>studentJDBCServlet</servlet-name>
-    <servlet-class>com.meygam.controller.StudentController</servlet-class>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.github.djm.controller.LoginController</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>NominatorAction</servlet-name>
+    <servlet-class>com.github.djm.controller.NominatorActionController</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>NomineeAction</servlet-name>
+    <servlet-class>com.github.djm.controller.NomineeActionController</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
-    <servlet-name>studentJDBCServlet</servlet-name>
-    <url-pattern>/StudentController</url-pattern>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginController</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>NominatorAction</servlet-name>
+    <url-pattern>/NominatorActionController</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>NomineeAction</servlet-name>
+    <url-pattern>/NomineeActionController</url-pattern>
+  </servlet-mapping>
+  
+  <context-param>
+    <param-name>DBUSER</param-name>
+    <param-value>root</param-value>
+  </context-param>
+  <context-param>
+    <param-name>DBPWD</param-name>
+    <param-value>root</param-value>
+  </context-param>
+  <context-param>
+    <param-name>DBURL</param-name>
+    <param-value>jdbc:mysql://localhost:3306/GTAMS</param-value>
+  </context-param>
 </web-app>
