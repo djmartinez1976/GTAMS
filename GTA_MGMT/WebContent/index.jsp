@@ -39,8 +39,7 @@ body {
 				<p>Please login to access GTAMS</p>
 			</div>
 
-			<a class="btn btn-primary" href="content/signup.jsp">Signup » </a> <a
-				class="btn btn-primary" href="content/login.jsp">Login » </a>
+			<a class="btn btn-primary" href="./content/login.jsp">Login » </a>
 		</div>
 
 		<div></div>

@@ -44,9 +44,6 @@
 		</div>
 
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
-			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search">
-			</form>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/GTAMS">Home</a></li>
 				<li class="active"><a href="login.jsp">Login</a></li>

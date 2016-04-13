@@ -172,12 +172,18 @@
 									</div>
 								</div>
 
-								<%if (request.getAttribute("errorMessage")!=null) %>
-								<div style="color: #FF0000;"><%=request.getAttribute("errorMessage") %></div>
+								<% 
+								Object errMsg=request.getAttribute("errorMessage");
+								if (errMsg!=null && errMsg.toString().length()>0 && !errMsg.toString().equalsIgnoreCase("null"))
+								{%>
+									<div style="color: #FF0000;"><%=errMsg %></div>
 
-								<%if (request.getAttribute("successMessage")!=null) %>
-								<div style="color: #00FF00;"><%=request.getAttribute("successMessage") %></div>
-
+								<%}
+								Object successMsg=request.getAttribute("successMessage");
+								if (successMsg!=null && successMsg.toString().length()>0 && !successMsg.toString().equalsIgnoreCase("null")) 
+								{%>
+								<div style="color: #00FF00;"><%=successMsg %></div>
+								<%} %>
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button class="btn btn-primary" data-toggle="modal" data-target="#themodal">Submit</button>

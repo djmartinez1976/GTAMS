@@ -291,12 +291,12 @@ $(document).ready(function(){
     								<!--Additional Publications will be added here -->
 								</div>
 
-								<%if (request.getAttribute("errorMessage")!=null) %>
+								<%if (request.getAttribute("errorMessage")!=null) {%>
 								<div style="color: #FF0000;"><%=request.getAttribute("errorMessage") %></div>
 
-								<%if (request.getAttribute("successMessage")!=null) %>
+								<%}if (request.getAttribute("successMessage")!=null) {%>
 								<div style="color: #00FF00;"><%=request.getAttribute("successMessage") %></div>
-
+								<%} %>
 								<div class="col-lg-9 col-lg-offset-3">
 									<button class="btn btn-default">Cancel</button>
 									<button class="btn btn-primary" data-toggle="modal"
