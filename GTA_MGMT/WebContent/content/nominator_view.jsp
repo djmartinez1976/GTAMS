@@ -90,7 +90,9 @@
 								<legend>Nominator Dashboard
 								<% if( request.getSession().getAttribute("name") != null) 
 								{
-									Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+									//Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+									Connection connection = DriverManager.getConnection( application.getInitParameter("DBURL"), 
+										application.getInitParameter("DBUSER") ,application.getInitParameter("DBPWD")) ;
 						            Statement stmtNominator = connection.createStatement() ;
 						            ResultSet rsNominator = stmtNominator.executeQuery("select * from nominator where name='" + request.getSession().getAttribute("name") +"'") ;
 			

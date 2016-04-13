@@ -152,7 +152,9 @@ $(document).ready(function(){
 								
 								if( nomineeName != null) 
 								{
-									Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+									//Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+									Connection connection = DriverManager.getConnection( application.getInitParameter("DBURL"), 
+										application.getInitParameter("DBUSER") ,application.getInitParameter("DBPWD")) ;
 						            Statement stmtNominee = connection.createStatement() ;
 						            ResultSet rsNominee = stmtNominee.executeQuery("select * from nominee where name='" + nomineeName +"'") ;
 						            if (rsNominee.next())

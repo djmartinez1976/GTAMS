@@ -92,12 +92,13 @@ $(document).ready(function(){
 	
 	var newGCMemberDiv = $("<div />");
                 
-	newGCMemberDiv.html('<input type="text" class="col-lg-5 control-text" name="gcMemberName' +gcMemberCount + 
-			'" id="gcMemberName"' + gcMemberCount + '" placeholder="GC Member Name" /> <input type="text" class="col-lg-5 control-text" name="gcMemberEmail' +
-			+ gcMemberCount + '" id="gcMemberEmail"' + gcMemberCount +'" placeholder="GC Member Email" />');
+	newGCMemberDiv.html('<input type="text" class="col-lg-3 control-text" name="gcMemberName' +gcMemberCount + 
+			'" id="gcMemberName"' + gcMemberCount + '" placeholder="GC Member Name" /> <input type="text" class="col-lg-3 control-text" name="gcMemberEmail' +
+			+ gcMemberCount + '" id="gcMemberEmail"' + gcMemberCount +'" placeholder="GC Member Email" /> <input type="text" class="col-lg-3 control-text" name="gcMemberUserName' 
+			+ gcMemberCount + '" id="gcMemberUserName"' + gcMemberCount + '" placeholder="GC Member User Name" /> <input type="text" class="col-lg-3 control-text" name="gcMemberPassword' 
+			+ gcMemberCount + '" id="gcMemberPassword"' + gcMemberCount + '" placeholder="GC Member Password" />');
             
 	newGCMemberDiv.appendTo("#GCMembersInfo");
-
 				
 	gcMemberCount++;
      });
@@ -123,7 +124,7 @@ $(document).ready(function(){
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
-						<form id="myForm" method="post" class="bs-example form-horizontal" action="../StudentController">
+						<form id="myForm" method="post" class="bs-example form-horizontal" action="SysAdminActionController">
 							<fieldset>
 								<legend>Admin DashBoard</legend>
 								
@@ -136,56 +137,68 @@ $(document).ready(function(){
 											id="sessionIdInput" placeholder="SessionId for this semester" />
 									</div>
 								</div>
+
+								<div class="form-group">
+									<label for="gcChairInput" class="col-lg-3 control-label">GC chair</label>
+									<div class="col-lg-9">
+										<input type="text" class="form-control" name="gcChair"
+											id="gcChair" placeholder="GC Chair" />
+									</div>
+								</div>
+
 									
 								<div id="GCMembersInfo" class="form-group">
-										<label for="gcMemberName" class="col-lg-4 control-label">GC Member Name </label>
-										<label for="gcMemberEmail" class="col-lg-4 control-label">GC Member Email </label>
-										<input type="button" class="col-lg-3 control-button" id="addGCMember" value="Add GC" />
+										<input type="button" id="addGCMember" value="Add GC" />
+
+										<label for="gcMemberName" class="col-lg-3 control-label">GC Member Name </label>
+										<label for="gcMemberEmail" class="col-lg-3 control-label">GC Member Email </label>
+										<label for="gcMemberUserName" class="col-lg-3 control-label">GC Member User Name </label>
+										<label for="gcMemberPassword" class="col-lg-3 control-label">GC Member Password </label>
 										
-										<br/>
 										
-										<input type="text" class="col-lg-5 control-text" name="gcMemberName1" id="gcMemberName1" placeholder="GC Member Name" />
-										<input type="text" class="col-lg-5 control-text" name="gcMemberEmail1" id="gcMemberEmail1" placeholder="GC Member Email" />
-									
+										
+										<input type="text" class="col-lg-3 control-text" name="gcMemberName1" id="gcMemberName1" placeholder="GC Member Name" />
+										<input type="text" class="col-lg-3 control-text" name="gcMemberEmail1" id="gcMemberEmail1" placeholder="GC Member Email" />
+										
+										<input type="text" class="col-lg-3 control-text" name="gcMemberUserName1" id="gcMemberUserName1" placeholder="GC Member UserName" />
+										<input type="text" class="col-lg-3 control-text" name="gcMemberPassword1" id="gcMemberPassword1" placeholder="GC Member Password" />
 								</div>
 
 								<div class="form-group">
-									<label for="deadLineNominator" class="col-lg-3 control-label">Deadline For Faculty</label>
+									<label for="deadLineNominator" class="col-lg-3 control-label">Deadline Nominator </label>
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="deadLineNominator"
-											id="deadLineNominator" placeholder="Last date to verify the Applications" />
+											id="deadLineNominator" placeholder="in yyyy-MM-dd format" />
 									</div>
 								</div>
 								
 								
 								<div class="form-group">
-									<label for="deadLineNominee" class="col-lg-3 control-label">Deadline For Nominee</label>
+									<label for="deadLineNominee" class="col-lg-3 control-label">Deadline Nominee</label>
 									<div class="col-lg-9">
 										<input type="text" class="form-control" name="deadLineNominee"
-											id="deadLineNominee" placeholder="Last date to provide complete Info" />
+											id="deadLineNominee" placeholder="in yyyy-MM-dd format" />
 									</div>
 								</div>
 								
 								
 								<div class="form-group">
-									<label for="deadLineGC" class="col-lg-3 control-label">Deadline For GC Members</label>
+									<label for="deadLineVerification" class="col-lg-3 control-label">Verification Deadline</label>
 									<div class="col-lg-9">
-										<input type="text" class="form-control" name="deadLineGC"
-											id="deadLineGC" placeholder="Last date to verify the Provide Scores" />
+										<input type="text" class="form-control" name="deadLineVerification"
+											id="deadLineVerification" placeholder="in yyyy-MM-dd format" />
 									</div>
 								</div>
 
 								<div class="col-lg-9 col-lg-offset-3">
-									<button class="btn btn-default">Cancel</button>
 									<button class="btn btn-primary" data-toggle="modal"
-										data-target="#themodal">Submit</button>
+										data-target="#themodal">Create Session</button>
 									<div id="themodal" class="modal fade" data-backdrop="static">
 										<div class="modal-dialog">
 											<div class="modal-content">
 												<div class="modal-header">
 													<button type="button" class="close" data-dismiss="modal"
 														aria-hidden="true">&times;</button>
-													<h3>Signup Form Submission</h3>
 												</div>
 												<div class="modal-body">
 													<p>Are you sure you want to do this?</p>

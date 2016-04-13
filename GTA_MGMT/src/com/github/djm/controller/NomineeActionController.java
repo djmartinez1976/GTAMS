@@ -49,6 +49,25 @@ public class NomineeActionController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException 
 	{
+		
+		if (request.getParameter("NomineeVerify").equalsIgnoreCase("Yes"))
+		{
+			request.setAttribute("NomineeVerify","");
+			java.sql.Connection dbConnection = DbUtil.getConnection();
+			try {
+				PreparedStatement prepStatement = dbConnection.prepareStatement("update nominee set verified_at=?where name='" + request.getParameter("nomineeName")+ "'");
+
+				String pattern = "yyyy-MM-dd";
+				String verifiedAt =new SimpleDateFormat(pattern).format(new Date());
+
+				prepStatement.setString(1, verifiedAt);
+				prepStatement.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		
 		request.setAttribute("successMessage", "");
 		request.setAttribute("errorMessage", "");
 		
@@ -93,6 +112,7 @@ class NomineeDetailsByNominee{
 	public int numPrevPHDA;
 	public String[] prevPHDA;
 	public int[] prevPHDDuration;
+	public String defURL;
 	
 	// Information to be updated in GLC table
 	public int numCourse;
@@ -117,6 +137,7 @@ class NomineeDetailsByNominee{
 		
 		String pattern = "yyyy-MM-dd";
 		registeredAt =new SimpleDateFormat(pattern).format(new Date());
+		defURL = request.getServletContext().getInitParameter("SiteURL");
 	}
 	
 	public String validateDetails()
@@ -158,7 +179,7 @@ class NomineeDetailsByNominee{
 			{
 				String email = rsNominator.getString("email");
 				String subject = "Nominated student : " + name + " registered";
-				String body = "Student : " + name + " completed the registration" + "\n" + "Please verify the details" + "\n\nThanks,\nGTAMS\n\nThis is Automated Email genereated by GTAMS" ;
+				String body = "Student : " + name + " completed the registration" + "\n" + "Please verify the details" + "\nLink:"+defURL+"/content/nominee_detail_view.jsp?nomineeName="+name + "&getVerfied=Yes"+ "\n\nThanks,\nGTAMS\n\nThis is Automated Email genereated by GTAMS" ;
 				emailUtil.sendEmail(email, subject, body);
 			}
 			

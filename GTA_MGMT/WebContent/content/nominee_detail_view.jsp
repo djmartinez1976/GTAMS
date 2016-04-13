@@ -9,14 +9,16 @@
 </head>
 <body>
 	<%
-		Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+		//Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+		Connection connection = DriverManager.getConnection( application.getInitParameter("DBURL"), 
+			application.getInitParameter("DBUSER") ,application.getInitParameter("DBPWD")) ;
         Statement stmtNominee = connection.createStatement() ;
         ResultSet rsNominee = stmtNominee.executeQuery("select * from nominee where name='" + request.getParameter("nomineeName")+"'") ;
         
-
         if (rsNominee.next())
         {
 		%>
+		<form id="myForm" method="post" action="NomineeActionController">
 	      <TABLE BORDER="1">
 		<%
         ResultSetMetaData rsmd = rsNominee.getMetaData();
@@ -26,12 +28,23 @@
           String colName = rsmd.getColumnName(i);
           String dataValue = rsNominee.getString(i);
     %>
-      <TR>
+      	<TR>
           <TD><%=colName %></TD>
           <Td><%=dataValue %></TD>
         </TR>
        
-       <%}%>
+       <%}
+       
+       if (request.getParameter("getVerfied")!= null && request.getParameter("getVerfied").length()>0)
+       {
+    	   request.setAttribute("getVerfied", "");
+    	   request.setAttribute("NomineeVerify", "Yes");
+       %>
+    	   <input type="submit" id="verifyDetails" value="verifyDetails" />
+    	   
+       <%}
+       %>
+       </FORM>
        </TABLE>
        <%} %>
 </body>

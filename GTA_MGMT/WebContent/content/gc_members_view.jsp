@@ -87,7 +87,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
-						<form id="myForm" method="post" class="bs-example form-horizontal" action="../StudentController">
+						<form id="myForm" method="post" class="bs-example form-horizontal" action="GCMembersActionController">
 							<fieldset>
 								<legend>GC Members Panel
 								<div align="right"> 
@@ -97,8 +97,10 @@
 								</legend>
 
 								<%
-//								Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-								Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+//								//Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+								//Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost:3306/GTAMS", "root", "root");
+								Connection connection = DriverManager.getConnection( application.getInitParameter("DBURL"), 
+										application.getInitParameter("DBUSER") ,application.getInitParameter("DBPWD")) ;
 								
 					            Statement stmtNominee = connection.createStatement() ;
 					            ResultSet rsNominee = stmtNominee.executeQuery("select * from nominee order by nominated_by, ranking") ;
@@ -123,9 +125,9 @@
 						            </TR>
 						            <% while(rsNominee.next()){ %>
 						            <TR>
-						                 <TD> <a href="./content/nominee_detail_view.jsp?nomineeName=<%=rsNominee.getString("name")%>"  
-						                onclick="window.open(this.href,'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes); return false;"> <%= rsNominee.getString("name") %> </a> </TD>
-						                
+						               <!--  onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes'); return false;"> <%= rsNominee.getString("name") %> </a> </TD>  -->
+						                 <TD> <a href="./content/nominee_detail_view.jsp?nomineeName=<%=rsNominee.getString("name")%>" onclick="window.open(this.href,'targetWindow')"> <%= rsNominee.getString("name") %> </a> </TD>  
+						               
 						                <TD> <%= rsNominee.getString("nominated_by") %></TD>
 						                <TD> <%= rsNominee.getString("ranking") %></TD>
 						                <TD> <%= rsNominee.getString("is_phd_cs") %></TD>
@@ -133,23 +135,37 @@
 						                	rsGCMembers.beforeFirst();
 						                	int totalScore =0;
 						                	int count = 0;
+						                	int iScore =0;
 						                	while(rsGCMembers.next())
 						                	{
 								            	rsScorecard = stmtScorecard.executeQuery("select score from scorecard where nominee_name='" 
 									            				+ rsNominee.getString("name") + "' and gcm_name='"+ rsGCMembers.getString("name") + "'") ;
 						                		
 							                	if (rsScorecard.next() ){
-							                		totalScore +=rsScorecard.getInt("score");
+							                		iScore = rsScorecard.getInt("score");
+							                		totalScore += iScore;
+							                	} else {
+							                		iScore = 0;
+							                	}
+						                		count++;
+						                		
+						                		String currGC = request.getSession().getAttribute("name").toString();
+						                		String currNominee = rsNominee.getString("name");
+						                		if (rsGCMembers.getString("name").equalsIgnoreCase(currGC))
+						                		{
+													%>
+						                			<TD><input type="text" name=<%=(currGC + "_" + currNominee + "_score") %> value=<%=iScore %> /> 
+						                			<input type="text" name=<%=(currGC + "_" + currNominee + "_comment") %> value="" placeholder = "Comments "/> </TD>
+						                			<%
+						                		}
+						                		else
+						                		{
 							                	%>
-							                	<TD> <%=rsScorecard.getInt("score") %></TD>
-						                	<%} else {%>
-						                	<TD> 0</TD>
-							                	<%}
-							                	count++;
-							                	}%>
+							                	<TD> <%=iScore%></TD>
+							                <%}}%>
 						                	<TD> <%=totalScore/count %></TD>
-						                	<%}%>
 						            </TR>
+						            <%}%>
 						        </TABLE>
 								
 								<input type="hidden" name="pageName" value="gc_members_view">

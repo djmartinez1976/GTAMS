@@ -54,16 +54,17 @@ create table scorecard(
 	gcm_name varchar(30),
 	session_id varchar(20) references session_master(session_id),
 	score INT,
+	comment varchar(32)
 	CONSTRAINT scorecard_PK PRIMARY KEY (nominee_name,gcm_name)
 );
 
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta1','gcm', 'fall2016',70);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta1','gcm1', 'fall2016',60);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta1','gcm2', 'fall2016',80);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta1','gcm3', 'fall2016',90);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta2','gcm', 'fall2016',80);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta2','gcm1', 'fall2016',70);
-insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta2','gcm2', 'fall2016',90);
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta1','gcm', 'fall2016',70, 'Comment1');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta1','gcm1', 'fall2016',60, 'Comment2');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta1','gcm2', 'fall2016',80, 'Comment3');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta1','gcm3', 'fall2016',90, 'Comment4');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta2','gcm', 'fall2016',80, 'Comment5');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta2','gcm1', 'fall2016',70, 'Comment6');
+insert into scorecard(nominee_name,gcm_name,session_id,score,comment) values ('gta2','gcm2', 'fall2016',90, 'Comment7');
 --insert into scorecard(nominee_name,gcm_name,session_id,score) values ('gta2','gcm3', 'fall2016',70);
 
 create table nominator(

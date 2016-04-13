@@ -19,6 +19,16 @@
     <servlet-class>com.github.djm.controller.NomineeActionController</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>SysAdminAction</servlet-name>
+    <servlet-class>com.github.djm.controller.SysAdminActionController</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>GCMembersAction</servlet-name>
+    <servlet-class>com.github.djm.controller.GCMembersActionController</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginController</url-pattern>
@@ -33,7 +43,17 @@
     <servlet-name>NomineeAction</servlet-name>
     <url-pattern>/NomineeActionController</url-pattern>
   </servlet-mapping>
+
+    <servlet-mapping>
+    <servlet-name>GCMembersAction</servlet-name>
+    <url-pattern>/GCMembersActionController</url-pattern>
+  </servlet-mapping>
   
+    <servlet-mapping>
+    <servlet-name>SysAdminAction</servlet-name>
+    <url-pattern>/SysAdminActionController</url-pattern>
+  </servlet-mapping>
+    
   <context-param>
     <param-name>DBUSER</param-name>
     <param-value>root</param-value>
@@ -46,4 +66,9 @@
     <param-name>DBURL</param-name>
     <param-value>jdbc:mysql://localhost:3306/GTAMS</param-value>
   </context-param>
+  <context-param>
+    <param-name>SiteURL</param-name>
+    <param-value>localhost:8080/GTAMS/</param-value>
+  </context-param>
+
 </web-app>
